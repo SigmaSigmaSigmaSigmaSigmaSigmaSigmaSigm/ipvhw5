@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Teachinder — find teachers from around the world.">
+  <title>Teachinder — Davydenko, Lab 5</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="/@webdatarocks/webdatarocks/webdatarocks.min.css">
+  <script src="/leaflet/dist/leaflet.js"></script>
+  <script src="/chart.js/dist/chart.umd.js"></script>
+  <script src="/lodash/lodash.js"></script>
+  <script src="/dayjs/dayjs.min.js"></script>
+  <script src="/@webdatarocks/webdatarocks/webdatarocks.js"></script>
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#teachers">Skip to teachers</a>
+  <div class="page">
+    <header>
+      <div class="header-top">
+        <a class="logo" href="index.html">Teachinder</a>
+        <form class="search" role="search" id="search-form">
+          <label class="sr-only" for="search">Name, note or age to search</label>
+          <input id="search" type="search" placeholder="Name, note or age to search">
+          <button class="outline-button" type="submit">Search</button>
+        </form>
+      </div>
+      <nav class="navigation" aria-label="Main navigation">
+        <div class="nav-links">
+          <a href="#teachers">Teachers</a><a href="#statistics">Statistics</a>
+          <a href="#favorites">Favorites</a><a href="#about">About</a>
+        </div>
+        <button class="outline-button add-teacher" type="button">Add teacher</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="teachers" class="teachers-section" aria-labelledby="teachers-title">
+        <h1 id="teachers-title" class="section-title">Top Teachers</h1>
+        <form class="filters" id="filters" aria-label="Filter teachers">
+          <label class="filter-group" for="age">Age
+            <select id="age"><option value="">All</option><option value="18-31">18-31</option><option value="32-45">32-45</option><option value="46-Infinity">46+</option></select>
+          </label>
+          <label class="filter-group" for="region">Country
+            <select id="region"><option value="">All</option></select>
+          </label>
+          <label class="filter-group" for="sex">Sex
+            <select id="sex"><option value="">All</option><option value="male">Male</option><option value="female">Female</option></select>
+          </label>
+          <label class="filter-group check-filter"><input id="with-photo" type="checkbox">Only with photo</label>
+          <label class="filter-group check-filter"><input id="only-favorites" type="checkbox">Only favorites</label>
+          <label class="filter-group" for="sort-field">Sort by
+            <select id="sort-field"><option value="full_name">Name</option><option value="course">Course</option><option value="age">Age</option><option value="country">Country</option><option value="b_day">Birthday</option></select>
+          </label>
+          <label class="filter-group" for="sort-direction">Order
+            <select id="sort-direction"><option value="asc">Ascending</option><option value="desc">Descending</option></select>
+          </label>
+        </form>
+
+        <div class="teacher-grid" id="teacher-list">
+        </div>
+        <p id="load-status" role="status" aria-live="polite"></p>
+        <button id="load-more" class="outline-button" type="button">Next 10</button>
+      </section>
+
+      <section id="statistics" class="statistics-section" aria-labelledby="statistics-title">
+        <h2 id="statistics-title" class="section-title">Statistics</h2>
+        <p id="statistics-summary" aria-live="polite"></p>
+        <div class="statistics-controls" role="group" aria-label="Statistics view">
+          <button class="outline-button" type="button" data-view="pie" aria-pressed="true">Pie chart</button>
+          <button class="outline-button" type="button" data-view="countries" aria-pressed="false">Country report</button>
+          <button class="outline-button" type="button" data-view="flat" aria-pressed="false">All teachers</button>
+        </div>
+        <p id="report-description">The pie chart shows the current selection by country.</p>
+        <div id="pie-container"><canvas id="statistics-pie" role="img" aria-label="Teachers by country"></canvas></div>
+        <p id="chart-empty" hidden>No teachers match the selection.</p>
+        <div id="pivot-report" hidden></div>
+      </section>
+
+      <section id="favorites" class="favorites-section" aria-labelledby="favorites-title">
+        <h2 id="favorites-title" class="section-title">Favorites</h2>
+        <div class="carousel">
+          <div class="favorites-list" id="favorites-list">
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="about-section" aria-label="About Teachinder">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque facere, hic impedit itaque molestiae sit tempore? Ea in mollitia natus rerum voluptates. Ea ex excepturi facere tempora. Aliquid asperiores hic impedit iusto quas quaerat ratione sit? Culpa iusto optio voluptas voluptate. Enim eveniet fugit iure maiores molestiae, praesentium quia.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eligendi illum in inventore ipsum odio officiis omnis quisquam sed tempora?</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque esse expedita id iusto mollitia, odit sint ullam veritatis vero?</p>
+      </section>
+    </main>
+
+    <footer><nav class="navigation" aria-label="Footer navigation"><div class="nav-links"><a href="#teachers">Teachers</a><a href="#statistics">Statistics</a><a href="#favorites">Favorites</a><a href="#about">About</a></div><button class="outline-button add-teacher" type="button">Add teacher</button></nav></footer>
+  </div>
+
+  <dialog id="add-dialog" class="add-dialog" aria-labelledby="add-title">
+    <header class="dialog-header"><h2 id="add-title">Add Teacher</h2><button class="close-dialog" type="button" aria-label="Close Add Teacher">×</button></header>
+    <form id="teacher-form" class="teacher-form">
+      <label class="field full">Name<input name="name" placeholder="Enter name" maxlength="100" required autocomplete="name"></label>
+      <label class="field full">Speciality<select name="speciality"><option>Mathematics</option><option>Chemistry</option><option>Chess</option><option>Vocal</option><option>Computer Science</option><option>Biology</option><option>Medicine</option><option>Physics</option><option>English</option><option>Art</option><option>Statistics</option></select></label>
+      <label class="field">Country<select name="country" autocomplete="country-name"><option>Ukraine</option><option>India</option><option>Denmark</option><option>Belgium</option><option>China</option><option>UK</option><option>Belarus</option><option>Poland</option><option>USA</option></select></label>
+      <label class="field">City<input name="city" autocomplete="address-level2"></label>
+      <label class="field">Email<input name="email" type="email" autocomplete="email" required></label>
+      <label class="field">Phone<input name="phone" type="tel" autocomplete="tel" maxlength="25" title="Use 7–25 characters: digits, +, spaces, parentheses, dots or hyphens"></label>
+      <label class="field">Date of birth<input name="birth" type="date" autocomplete="bday" required></label>
+      <fieldset class="sex-field full"><legend>Sex</legend><label>Male <input type="radio" name="sex" value="male" required></label><label>Female <input type="radio" name="sex" value="female" required></label></fieldset>
+      <label class="color-field full">Background color<input name="color" type="color" value="#ffffff"></label>
+      <label class="field full">Notes (optional)<textarea name="notes" rows="5" maxlength="2000"></textarea></label>
+      <p id="form-status" class="full" role="status" aria-live="polite"></p>
+      <button class="outline-button full submit-teacher" type="submit">Add</button>
+    </form>
+  </dialog>
+
+  <dialog id="info-dialog" class="info-dialog" aria-labelledby="info-title">
+    <header class="dialog-header"><h2 id="info-title">Teacher Info</h2><button class="close-dialog" type="button" aria-label="Close Teacher Info">×</button></header>
+    <div class="teacher-profile">
+      <div id="profile-photo" class="profile-photo"></div>
+      <button id="profile-favorite" class="profile-favorite" type="button" aria-label="Add to favorites" aria-pressed="false">☆</button>
+      <div class="profile-details"><h3 id="profile-name"></h3><p id="profile-speciality"></p><p id="profile-location"></p><p id="profile-demographics"></p><p id="profile-birthday"></p><p><a id="profile-email"></a></p><p><a id="profile-phone"></a></p></div>
+      <p id="profile-notes" class="profile-notes"></p>
+      <p id="map-status" role="status"></p><div id="teacher-map" role="region" aria-label="Teacher location map"></div>
+    </div>
+  </dialog>
+</body>
+</html>

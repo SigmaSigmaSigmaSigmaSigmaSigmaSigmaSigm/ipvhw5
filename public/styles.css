@@ -1,0 +1,268 @@
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("assets/source-sans-pro-light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("assets/source-sans-pro-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("assets/source-sans-pro-semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("assets/source-sans-pro-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --accent: #ff5b4b;
+  --accent-dark: #d74432;
+  --ring: #ff958b;
+  --ink: #242424;
+  --muted: #888;
+  --link: #39a0b5;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--ink); background: #fcfcfc; font: 300 16px/1.25 "Source Sans Pro", sans-serif; }
+button, input, select, textarea { font: inherit; }
+button, select, input[type="checkbox"], input[type="radio"], input[type="color"] { cursor: pointer; }
+button { color: inherit; }
+button, a, input, select, textarea, summary { -webkit-tap-highlight-color: transparent; }
+button { touch-action: manipulation; }
+a { color: var(--link); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--link); outline-offset: 4px; }
+[hidden] { display: none !important; }
+.sr-only, .skip-link:not(:focus) { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.skip-link:focus { position: fixed; z-index: 10; top: 8px; left: 8px; padding: 12px; background: white; }
+.page { max-width: 1200px; margin: 0 auto; padding: 30px 100px 32px; background: #fff; box-shadow: 0 0 7px #0003; }
+
+/* Flexbox: шапка, навігація та фільтри. */
+.header-top, .navigation, .nav-links, .search, .filters { display: flex; align-items: center; }
+.header-top { min-height: 60px; justify-content: space-between; gap: 30px; }
+.logo { color: #fff; font: 700 50px/1 Georgia, serif; letter-spacing: 0; text-decoration: none; text-shadow: -2px 0 var(--accent), 2px 2px #111; }
+.logo:hover { color: #222; }
+.search { gap: 20px; }
+.search input { width: 220px; height: 42px; min-width: 0; padding: 9px 8px; border: 1px solid #888; border-radius: 0; transition: width .2s; }
+.search input:focus { width: 400px; }
+.search .outline-button { min-width: 94px; height: 42px; font-size: 16px; }
+.outline-button { border: 1px solid var(--accent); border-radius: 0; background: #fff; color: var(--accent); padding: 10px 22px; font-weight: 400; transition: background .15s, color .15s; }
+.outline-button:hover, .outline-button:focus-visible { background: var(--accent); color: #fff; }
+.navigation { justify-content: space-between; gap: 24px; margin-top: 50px; }
+.nav-links { gap: 40px; flex-wrap: wrap; }
+.nav-links a { color: var(--accent); font-size: 24px; font-weight: 400; text-decoration: none; }
+.nav-links a:hover { color: var(--accent-dark); }
+.add-teacher { min-width: 170px; min-height: 54px; font-size: 24px; }
+
+.teachers-section { margin-top: 40px; }
+.section-title { margin: 0; text-align: center; font-size: 40px; line-height: 50px; font-weight: 600; }
+.section-title::before, .about-section::before { content: ""; display: block; width: 50%; margin: 0 auto 25px; border-top: 1px solid var(--ink); }
+.filters { margin: 38px 0 60px; min-height: 36px; color: var(--muted); }
+.filter-group { display: flex; align-items: center; gap: 18px; padding: 0 20px; min-height: 36px; border-right: 2px dotted #999; }
+.filter-group:first-child { padding-left: 0; }
+.filter-group:last-child { border: 0; padding-right: 0; }
+.filter-group select { height: 36px; padding: 4px 6px; background: #fff; border: 1px solid #888; border-radius: 2px; color: #111; }
+#age { width: 77px; }
+#region { width: 92px; }
+#sex { width: 87px; }
+.check-filter { gap: 7px; white-space: nowrap; }
+.check-filter input { margin: 0; accent-color: var(--accent); }
+.check-filter:has(input:checked), .check-filter:hover { color: var(--ink); }
+
+/* Grid: картки викладачів, п'ять стовпців на великому екрані. */
+.teacher-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 40px; }
+.teacher-card { position: relative; min-width: 0; text-align: center; }
+.teacher-open { display: block; width: 100%; padding: 0; border: 0; background: transparent; }
+.avatar { display: flex; align-items: center; justify-content: center; width: 150px; height: 150px; margin: 0 auto; overflow: hidden; border: 4px solid var(--ring); border-radius: 50%; background: #fff; transition: border-color .15s; }
+.avatar img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .2s; }
+.teacher-open:hover .avatar { border-color: var(--accent-dark); }
+.teacher-open:hover .avatar img { transform: scale(1.08); }
+.initials { color: var(--accent); font-size: 30px; font-weight: 600; }
+.teacher-open:hover .initials { color: var(--accent-dark); }
+.teacher-name { display: block; margin-top: 20px; font-size: 24px; font-weight: 400; line-height: 30px; min-height: 60px; overflow-wrap: anywhere; }
+.speciality { margin: 10px 4px 0; color: var(--muted); line-height: 20px; }
+.country { margin: 6px 0 0; font-size: 12px; line-height: 18px; }
+.favorite-badge { position: absolute; z-index: 1; top: 2px; right: 17px; color: #ffff00; font: 40px/1 Arial, sans-serif; pointer-events: none; }
+
+.statistics-section { margin-top: 56px; }
+.table-scroll { margin-top: 38px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: center; white-space: nowrap; }
+th { border-bottom: 1px solid var(--ink); font-size: 20px; font-weight: 300; }
+th:nth-child(1), th:nth-child(2), th:nth-child(5) { width: 23%; }
+th:nth-child(3) { width: 14%; }
+th:nth-child(4) { width: 17%; }
+th:first-child button { padding-left: 32px; }
+td:first-child { white-space: normal; overflow-wrap: anywhere; }
+th:first-child, td:first-child { text-align: left; }
+th button { width: 100%; padding: 12px 20px; border: 0; background: transparent; font: inherit; text-align: inherit; }
+th:hover { background: #fafafa; box-shadow: inset 0 -4px var(--ink); }
+th:hover button::after { content: " ↓"; color: var(--link); }
+td { padding: 8px 20px; height: 36px; }
+tbody tr:nth-child(even) { background: #f9f5fa; }
+.pagination { display: flex; align-items: center; gap: 20px; margin: 30px 20px 0; min-height: 26px; }
+.pagination button { padding: 0; border: 0; background: none; color: var(--link); }
+.pagination button[aria-current] { color: var(--ink); }
+.pagination button:hover { text-decoration: underline; }
+
+.favorites-section { margin-top: 36px; }
+.carousel { position: relative; margin-top: 38px; }
+.favorites-list { display: flex; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory; }
+.favorites-list::-webkit-scrollbar { display: none; }
+.favorites-list .teacher-card { flex: 0 0 20%; scroll-snap-align: start; }
+.carousel-arrow { position: absolute; top: 50%; width: 44px; height: 64px; padding: 0; border: 0; background: transparent; transform: translateY(-50%); }
+.carousel-arrow::before { content: ""; display: block; width: 22px; height: 64px; margin: auto; background: #888; clip-path: polygon(100% 0, 0 50%, 100% 100%, 100% 70%, 45% 50%, 100% 30%); }
+.carousel-arrow:hover::before { background: var(--ink); }
+.previous { left: -70px; }
+.next { right: -70px; transform: translateY(-50%) rotate(180deg); }
+.about-section { margin-top: 60px; }
+.about-section::before { margin-bottom: 42px; }
+.about-section p { margin: 0 0 16px; line-height: 20px; }
+footer .navigation { margin-top: 30px; }
+
+dialog { padding: 0; border: 0; max-width: calc(100vw - 32px); max-height: calc(100dvh - 32px); color: var(--ink); background: #fff; box-shadow: 0 3px 12px #0007; overflow-y: auto; }
+dialog::backdrop { background: #0008; backdrop-filter: blur(5px); }
+body:has(dialog[open]) { overflow: hidden; }
+.dialog-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; min-height: 64px; background: #464547; color: white; }
+.dialog-header h2 { margin: 0; font-size: 28px; font-weight: 400; }
+.close-dialog { border: 0; padding: 0; width: 36px; height: 36px; background: none; color: white; font: 700 32px/1 Arial, sans-serif; }
+.close-dialog:hover { color: var(--ring); }
+.add-dialog { width: 560px; }
+.teacher-form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 32px; padding: 30px 36px; color: var(--muted); }
+.full { grid-column: 1 / -1; }
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.field input, .field select, .field textarea { width: 100%; min-width: 0; border: 1px solid #999; border-radius: 0; padding: 6px 10px; background: white; color: var(--ink); }
+.field input, .field select { height: 36px; }
+.field textarea { height: 128px; resize: vertical; }
+.sex-field { border: 0; padding: 0; margin: 0; display: flex; align-items: center; gap: 10px; }
+.sex-field legend { float: left; margin-right: 28px; }
+.sex-field label { display: inline-flex; align-items: center; gap: 6px; }
+.sex-field input { margin: 0; accent-color: var(--accent); }
+.color-field { display: flex; align-items: center; gap: 32px; }
+.color-field input { width: 48px; height: 28px; border: 1px solid #999; padding: 2px; }
+.submit-teacher { margin-top: 14px; min-height: 64px; font-size: 30px; font-weight: 600; }
+.info-dialog { width: 950px; }
+.teacher-profile { padding: 20px; position: relative; }
+/* Float: фотографія зліва, інформація обтікає її; нотатки починаються нижче. */
+.profile-photo { float: left; width: 320px; height: 320px; margin: 0 40px 30px 0; }
+.profile-photo img { width: 100%; height: 100%; object-fit: cover; }
+.profile-photo .initials { display: flex; align-items: center; justify-content: center; height: 100%; background: #f9f5fa; font-size: 64px; }
+.profile-details { overflow: hidden; padding-right: 40px; }
+.profile-details h3 { margin: 0 0 30px; font-size: 40px; line-height: 50px; font-weight: 400; overflow-wrap: anywhere; }
+#profile-speciality { margin-bottom: 24px; font-size: 24px; font-weight: 600; }
+.profile-details p { margin: 0 0 16px; }
+.profile-details a { text-decoration: none; overflow-wrap: anywhere; }
+#profile-phone { color: var(--ink); }
+.profile-favorite { position: absolute; top: 22px; right: 20px; padding: 0; width: 42px; height: 42px; color: #eceb19; background: none; border: 0; font: 42px/1 Arial, sans-serif; }
+.profile-notes { clear: both; margin: 0 0 20px; line-height: 20px; }
+.map-details summary { width: fit-content; color: var(--link); text-decoration: underline dotted; cursor: pointer; list-style: none; }
+.map-details summary::-webkit-details-marker { display: none; }
+.map-details p { margin-bottom: 0; }
+
+@media (max-width: 1199px) {
+  .page { padding-right: 6%; padding-left: 6%; }
+  .search input:focus { width: 260px; }
+  .nav-links { gap: 24px; }
+  .filters { flex-wrap: wrap; gap: 12px 0; }
+  .filter-group { padding: 0 14px; }
+  .avatar { width: 130px; height: 130px; }
+  .favorite-badge { right: 6px; }
+  .previous { left: -44px; }
+  .next { right: -44px; }
+}
+
+/* Мобільна версія: умова лабораторної роботи, ширина менша за 768 px. */
+@media (max-width: 767px) {
+  .page { padding: 24px 20px; }
+  .header-top { flex-direction: column; align-items: stretch; gap: 24px; }
+  .logo { align-self: center; font-size: 44px; }
+  .search { width: 100%; gap: 10px; }
+  .search input, .search input:focus { width: 0; flex: 1; }
+  .search .outline-button { min-width: 78px; padding: 8px 12px; }
+  .navigation { margin-top: 28px; flex-wrap: wrap; justify-content: center; gap: 20px; }
+  .nav-links { width: 100%; justify-content: space-between; gap: 12px; }
+  .nav-links a { font-size: 19px; }
+  .add-teacher { min-height: 46px; font-size: 21px; }
+  .section-title { font-size: 32px; line-height: 42px; }
+  .section-title::before, .about-section::before { width: 70%; margin-bottom: 20px; }
+  .filters { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin: 26px 0 36px; }
+  .filter-group { padding: 0; border: 0; gap: 8px; justify-content: space-between; }
+  .check-filter { justify-content: flex-start; font-size: 14px; }
+  .teacher-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
+  .avatar { width: 130px; height: 130px; }
+  .teacher-name { font-size: 21px; line-height: 26px; min-height: 52px; margin-top: 14px; }
+  .speciality { font-size: 14px; margin-top: 6px; }
+  .favorite-badge { right: 0; font-size: 34px; }
+  .statistics-section, .favorites-section, .about-section { margin-top: 40px; }
+  .table-scroll { margin-top: 26px; }
+  table { min-width: 700px; }
+  th { font-size: 18px; }
+  td, th button { padding-left: 14px; padding-right: 14px; }
+  .pagination { margin-left: 0; }
+  .carousel { margin: 26px 24px 0; }
+  .favorites-list .teacher-card { flex-basis: 50%; }
+  .previous { left: -36px; }
+  .next { right: -36px; }
+  .carousel-arrow { width: 28px; }
+  .carousel-arrow::before { width: 16px; height: 30px; }
+  .about-section::before { margin-bottom: 28px; }
+  .dialog-header { min-height: 54px; padding: 8px 16px; }
+  .dialog-header h2 { font-size: 24px; }
+  .teacher-form { padding: 24px 20px; gap: 16px; }
+  .teacher-form .field { grid-column: 1 / -1; }
+  .submit-teacher { margin-top: 8px; min-height: 50px; }
+  .teacher-profile { padding: 20px; }
+  .profile-photo { float: none; width: min(240px, 100%); height: 240px; margin: 0 auto 24px; }
+  .profile-details { padding-right: 0; }
+  .profile-details h3 { font-size: 30px; line-height: 38px; margin-bottom: 18px; }
+  .profile-favorite { top: 14px; right: 8px; }
+  .profile-notes { margin-top: 24px; }
+}
+
+@media (max-width: 359px) {
+  .page { padding-right: 14px; padding-left: 14px; }
+  .avatar { width: 116px; height: 116px; }
+  .nav-links { gap: 8px; }
+  .nav-links a { font-size: 17px; }
+  .filters { column-gap: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}
+
+/* Таблиця містить дату народження. */
+table { min-width: 850px; table-layout: auto; }
+th:nth-child(n) { width: auto; }
+.profile-photo .avatar { width: 100%; height: 100%; border-radius: 0; border: 0; }
+th[aria-sort="ascending"] button::after { content: " ↑"; }
+th[aria-sort="descending"] button::after { content: " ↓"; }
+
+#load-more { margin-top: 10px; }
+#load-status, #form-status { min-height: 1.5em; }
+#statistics-summary { text-align: center; margin-top: 16px; }
+button:disabled { opacity: .6; cursor: wait; }
+
+.statistics-controls { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 24px 0 16px; }
+.statistics-controls button { padding: 8px 14px; font-size: 17px; }
+.statistics-controls [aria-pressed="true"] { background: var(--accent, #ff5b53); color: white; }
+#report-description { text-align: center; }
+#pie-container { position: relative; height: 460px; max-width: 720px; margin: 24px auto; }
+#pivot-report { max-width: 100%; margin-top: 24px; overflow: hidden; }
+#teacher-map { height: 280px; clear: both; margin-top: 16px; }
+[hidden] { display: none !important; }
+.filters { flex-wrap: wrap; row-gap: 16px; }
+@media (max-width: 767px) { #pie-container { height: 430px; } .statistics-controls { gap: 8px; } #teacher-map { height: 230px; } }

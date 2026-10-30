@@ -1,0 +1,20 @@
+{
+  "name": "davydenko-ipvhw5",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "json-server db.json --static ./public --static ./node_modules --host 127.0.0.1 --port 3005",
+    "test": "node --test test.js"
+  },
+  "devDependencies": {
+    "json-server": "1.0.0-beta.15"
+  },
+  "dependencies": {
+    "leaflet": "1.9.4",
+    "chart.js": "4.6.1",
+    "lodash": "4.18.1",
+    "dayjs": "1.11.23",
+    "@webdatarocks/webdatarocks": "1.4.23"
+  }
+}
